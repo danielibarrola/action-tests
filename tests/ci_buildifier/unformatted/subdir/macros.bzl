@@ -14,8 +14,7 @@ def another_macro(name,srcs=[ ]):
     native.genrule(
         name = name,
         srcs = [
-            "z_last.txt",
-            "a_first.txt",  # Not sorted
+            "a_first.txt",
         ],
         outs = [name + ".out"],
         cmd = "cat $(SRCS) > $@",
