@@ -11,7 +11,6 @@ def   my_macro(name, srcs = []):
     )
 
 def another_macro(name,srcs=[ ]):
-    # This file has bad indentation and spacing
     native.genrule(
         name = name,
         srcs = [

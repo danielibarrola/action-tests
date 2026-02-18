@@ -7,7 +7,7 @@ py_library(
 )
 
 py_binary(
-    name = "main",
+    name = "main1",
     srcs = ["main.py"],
     deps = [
         ":hello_lib",
