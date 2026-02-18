@@ -6,15 +6,15 @@ on:
       - main
     paths:
       - .github/workflows/buildifier-check-on-error.yml
-      - tests/ci_buildifier
-      - ci_buildifier/
+      - tests/ci_buildifier/**
+      - ci_buildifier/**
   pull_request:
     branches:
       - main
     paths:
       - .github/workflows/buildifier-check-on-error.yml
-      - tests/ci_buildifier
-      - ci_buildifier/
+      - tests/ci_buildifier/**
+      - ci_buildifier/**
 
 defaults:
   run:
@@ -39,7 +39,11 @@ jobs:
         uses: ./ci_buildifier
         continue-on-error: true  # it should fail on unformatted files
         with:
-          filepaths: "tests/ci_buildifier/unformatted/*.bzl tests/ci_buildifier/unformatted/BUILD"
+          filepaths: >
+            tests/ci_buildifier/unformatted/*.bzl
+            tests/ci_buildifier/unformatted/BUILD
+            tests/ci_buildifier/unformatted/WORKSPACE
+            tests/ci_buildifier/unformatted/*.bazel
 
       - name: Verify failure
         shell: bash
