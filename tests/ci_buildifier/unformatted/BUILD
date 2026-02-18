@@ -1,6 +1,7 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 py_library(
+    # new comment
       name="hello_lib",
     srcs = ["hello_lib.py"],
     visibility = ["//visibility:public"],

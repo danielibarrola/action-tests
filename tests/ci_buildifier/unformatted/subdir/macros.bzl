@@ -11,6 +11,7 @@ def   my_macro(name, srcs = []):
     )
 
 def another_macro(name,srcs=[ ]):
+    # new comment
     native.genrule(
         name = name,
         srcs = [
