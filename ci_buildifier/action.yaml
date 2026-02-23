@@ -29,9 +29,7 @@ runs:
       env:
         TARGET_SHA: ${{ github.event.before }}
         FILE_PATHS: ${{ inputs.filepaths }}
-      run: |
-        echo "Detecting changed Bazel files..."
-        
+      run: |        
         # Add this line to resolve the dubious ownership error
         git config --global --add safe.directory "$GITHUB_WORKSPACE"
         
@@ -39,6 +37,8 @@ runs:
         
         # Determine the correct base for the git diff
         if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          echo "Detecting changed Bazel files..."
+
           DIFF_BASE="HEAD~1"
           
           echo "Comparing changes from $DIFF_BASE to HEAD"
@@ -49,9 +49,11 @@ runs:
           $GIT_DIFF_CMD | xargs -0 buildifier --mode=check -v
           
         elif [[ "${{ github.event_name }}" == "push" ]]; then
-          # Run on all files if this is a push event
-          buildifier -r -v --mode=check $BAZEL_PATTERNS
-        
+          # Run on specified files if this is a push event
+          echo "Checking formatting of specified bazel files..."
+          # Use git ls-files to safely expand the patterns (including git pathspecs)
+          git ls-files -z -- $BAZEL_PATTERNS | xargs -0 -r buildifier --mode=check -v
+
         else
           echo "::error::Unsupported event type: ${GITHUB_EVENT_NAME}"
           exit 1
