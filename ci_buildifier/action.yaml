@@ -50,7 +50,7 @@ runs:
           
         elif [[ "${{ github.event_name }}" == "push" ]]; then
           # Run on all files if this is a push event
-          buildifier -r -v --mode=check ./
+          buildifier -r -v --mode=check $BAZEL_PATTERNS
         
         else
           echo "::error::Unsupported event type: ${GITHUB_EVENT_NAME}"
