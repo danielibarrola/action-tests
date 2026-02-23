@@ -35,13 +35,10 @@ jobs:
           persist-credentials: false
 
       - name: Run buildifier on formatted files
-        id: run-buildifier
         uses: ./ci_buildifier
-        if: github.event_name == 'pull_request'
         with:
           filepaths: "tests/ci_buildifier/formatted/*.bzl tests/ci_buildifier/formatted/BUILD"
 
       - name: Run buildifier on all files
-        id: run-buildifier
         uses: ./ci_buildifier
         if: github.event_name == 'push'
