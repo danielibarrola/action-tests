@@ -4,7 +4,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-permissions: {}
+permissions:
+  pull-requests: write  # needed to add comments in the pull request
+  contents: read
 
 jobs:
   verify-squash:
@@ -19,3 +21,4 @@ jobs:
         uses: ./ci_squash
         with:
           max-commits: 1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
