@@ -9,6 +9,10 @@ inputs:
   github-token:
     description: 'GitHub token to post PR comments'
     required: false
+  skip-label:
+    description: 'PR label that allows skipping the squash check'
+    required: false
+    default: 'skip-squash-check'
 
 runs:
   using: 'composite'
@@ -27,7 +31,16 @@ runs:
         PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+        SKIP_LABEL: ${{ inputs.skip-label }}
+        PR_LABELS: ${{ toJson(github.event.pull_request.labels) }}
       run: |
+        # Check if the skip label is present
+        if echo "$PR_LABELS" | grep -q "\"name\": \"$SKIP_LABEL\""; then
+          echo "Skip label '$SKIP_LABEL' found. Bypassing squash check."
+          echo "is_squashed=true" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
         # Get base and head refs from GitHub context
         if [ -z "$PR_BASE_SHA" ]; then
           echo "::error::This action must be run on a pull request event"
